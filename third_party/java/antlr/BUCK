@@ -1,0 +1,9 @@
+prebuilt_jar(
+  name = 'antlr',
+  maven_coords = 'org.antlr.v4.runtime:antlr:jar:4.9.3',
+  binary_jar = 'antlr4-runtime-4.9.3.jar',
+  source_jar = 'antlr4-runtime-4.9.3-sources.jar',
+  visibility = [
+    '//java/server/src/org/openqa/grid:grid'
+  ],
+)

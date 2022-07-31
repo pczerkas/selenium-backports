@@ -1,0 +1,19 @@
+prebuilt_jar(
+  name = 'graphql-java',
+  maven_coords = 'com.graphql-java:graphql-java:18.1',
+  binary_jar = 'graphql-java-18.1.jar',
+  source_jar = 'graphql-java-18.1-sources.jar',
+  visibility = [
+    '//java/server/src/org/openqa/grid:grid'
+  ],
+)
+
+prebuilt_jar(
+  name = 'java-dataloader',
+  maven_coords = 'com.graphql-java:java-dataloader:3.1.4',
+  binary_jar = 'java-dataloader-3.1.4.jar',
+  source_jar = 'java-dataloader-3.1.4-sources.jar',
+  visibility = [
+    '//java/server/src/org/openqa/grid:grid'
+  ],
+)

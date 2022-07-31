@@ -23,6 +23,7 @@ import org.openqa.grid.internal.utils.configuration.GridHubConfiguration;
 import org.openqa.grid.shared.Stoppable;
 import org.openqa.grid.web.servlet.DisplayHelpServlet;
 import org.openqa.grid.web.servlet.DriverServlet;
+import org.openqa.grid.web.servlet.GraphqlServlet;
 import org.openqa.grid.web.servlet.Grid1HeartbeatServlet;
 import org.openqa.grid.web.servlet.HubStatusServlet;
 import org.openqa.grid.web.servlet.HubW3CStatusServlet;
@@ -141,6 +142,8 @@ public class Hub implements Stoppable {
     handler.addServlet(statusHolder, "/wd/hub/status");
 
     handler.addServlet(TestSessionStatusServlet.class.getName(), "/grid/api/testsession/*");
+
+    handler.addServlet(GraphqlServlet.class.getName(), "/graphql");
 
     // add optional default servlets
     if (!config.isWithOutServlet(ResourceServlet.class)) {
