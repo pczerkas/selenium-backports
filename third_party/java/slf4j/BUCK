@@ -23,3 +23,16 @@ prebuilt_jar(
     '//third_party/java/netty:netty-all'
   ],
 )
+
+prebuilt_jar(
+  name = 'slf4j-simple',
+  maven_coords = 'org.slf4j:slf4j-simple:jar:1.7.25',
+  binary_jar = 'slf4j-simple-1.7.25.jar',
+  source_jar = 'slf4j-simple-1.7.25-sources.jar',
+  deps = [
+    ':slf4j-api',
+  ],
+  visibility = [
+    '//java/server/src/org/openqa/grid:grid',
+  ],
+)

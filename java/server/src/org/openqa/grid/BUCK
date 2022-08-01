@@ -39,6 +39,7 @@ java_library(name = 'grid',
     '//third_party/java/jetty:jetty',
     '//third_party/java/servlet:javax.servlet-api',
     '//third_party/java/slf4j:slf4j-api',
+    '//third_party/java/slf4j:slf4j-simple',
     '//third_party/java/yaml:snakeyaml',
   ],
   visibility = [

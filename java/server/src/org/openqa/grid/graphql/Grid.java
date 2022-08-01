@@ -18,7 +18,7 @@
 package org.openqa.grid.graphql;
 
 // import com.google.common.collect.ImmutableList;
-import org.openqa.grid.graphql.Session;
+// import org.openqa.grid.graphql.Session;
 import org.openqa.grid.internal.GridRegistry;
 import org.openqa.grid.internal.RemoteProxy;
 import org.openqa.grid.internal.Require;
@@ -41,10 +41,10 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 // import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
-import java.util.Arrays;
+// import java.util.Arrays;
 import java.util.ArrayList;
 // import java.util.Collection;
-import java.util.Collections;
+// import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -186,7 +186,8 @@ public class Grid {
     //   }
     // }
 
-    for (RemoteProxy proxy : getActiveNodes()) {
+    // for (RemoteProxy proxy : getActiveNodes()) {
+    for (RemoteProxy proxy : getNodes()) {
       for (TestSlot slot : proxy.getTestSlots()) {
         // if (slot.getSession() != null && !slot.getSession().getId().equals(RESERVED)) {
         if (slot.getSession() != null) {
@@ -218,132 +219,36 @@ public class Grid {
   }
 
   public int getNodeCount() {
-    return getActiveNodes().size();
+    // return getActiveNodes().size();
+    return getNodes().size();
   }
 
   public int getMaxSession() {
     int totalSlots = 0;
-    for (RemoteProxy proxy : getActiveNodes()) {
+    // for (RemoteProxy proxy : getActiveNodes()) {
+    for (RemoteProxy proxy : getNodes()) {
       totalSlots += Math.min(proxy.getMaxNumberOfConcurrentTestSessions(), proxy.getTestSlots().size());
     }
 
     return totalSlots;
   }
 
-  private List<RemoteProxy> getActiveNodes() {
+  // private List<RemoteProxy> getActiveNodes() {
+  //   return registry.getAllProxies().getSorted()
+  //     .parallelStream().filter(remoteProxy -> {
+  //       // Only counting proxies that reply at their status endpoint
+  //       try {
+  //         remoteProxy.getProxyStatus();
+  //         return true;
+  //       } catch (Exception e) {
+  //         return false;
+  //       }
+  //     }).collect(Collectors.toList());
+  // }
+
+  private List<RemoteProxy> getNodes() {
     return registry.getAllProxies().getSorted()
-      .parallelStream().filter(remoteProxy -> {
-        // Only counting proxies that reply at their status endpoint
-        try {
-          remoteProxy.getProxyStatus();
-          return true;
-        } catch (Exception e) {
-          return false;
-        }
-      }).collect(Collectors.toList());
+      .stream()
+      .collect(Collectors.toList());
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// package org.openqa.grid.web.servlet;
-
-// import static com.google.common.net.MediaType.JSON_UTF_8;
-// import static java.net.HttpURLConnection.HTTP_OK;
-// import static java.nio.charset.StandardCharsets.UTF_8;
-// import static org.openqa.selenium.remote.ErrorCodes.SUCCESS;
-
-// import com.google.common.collect.ImmutableMap;
-
-// import org.openqa.grid.internal.GridRegistry;
-
-// import org.openqa.selenium.BuildInfo;
-// import org.openqa.selenium.json.Json;
-
-// import java.io.IOException;
-
-// import java.util.Map;
-// import java.util.Objects;
-
-
-// import javax.servlet.ServletOutputStream;
-// import javax.servlet.http.HttpServlet;
-// import javax.servlet.http.HttpServletRequest;
-// import javax.servlet.http.HttpServletResponse;
-
-// /**
-//  * Responds to the WebDriver status request to indicate whether or not the hub is ready to respond.
-//  */
-// public class HubW3CStatusServlet extends HttpServlet {
-
-//   private final GridRegistry registry;
-
-//   public HubW3CStatusServlet(GridRegistry registry) {
-//     this.registry = Objects.requireNonNull(registry);
-//   }
-
-//   @Override
-//   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-//       throws IOException {
-//     List<RemoteProxy> allProxies = registry.getAllProxies().getSorted()
-//         .parallelStream().filter(remoteProxy -> {
-//           // Only counting proxies that reply at their status endpoint
-//           try {
-//             remoteProxy.getProxyStatus();
-//             return true;
-//           } catch (Exception e) {
-//             return false;
-//           }
-//         }).collect(Collectors.toList());
-//     List<RemoteProxy> busyProxies = allProxies.parallelStream()
-//         .filter(proxy -> proxy.getMaxNumberOfConcurrentTestSessions() - proxy.getTotalUsed() <= 0)
-//         .collect(Collectors.toList());
-
-//     ImmutableMap.Builder<String, Object> value = ImmutableMap.builder();
-
-//     // W3C spec
-//     boolean availableProxies = allProxies.size() > busyProxies.size();
-//     value.put("ready", availableProxies);
-//     value.put("message", availableProxies ? "Hub has capacity" : "No spare hub capacity" );
-
-//     BuildInfo buildInfo = new BuildInfo();
-//     value.put("build", ImmutableMap.of(
-//         // We need to fix the BuildInfo to properly fill out these values.
-//         "revision", buildInfo.getBuildRevision(),
-//         "time", buildInfo.getBuildTime(),
-//         "version", buildInfo.getReleaseLabel()));
-
-//     value.put("os", ImmutableMap.of(
-//         "arch", System.getProperty("os.arch"),
-//         "name", System.getProperty("os.name"),
-//         "version", System.getProperty("os.version")));
-
-//     value.put("java", ImmutableMap.of("version", System.getProperty("java.version")));
-
-//     Map<String, Object> payloadObj = ImmutableMap.of(
-//         "status", SUCCESS,
-//         "value", value.build());
-
-//     // Write out a minimal W3C status response.
-//     byte[] payload = new Json().toJson(payloadObj).getBytes(UTF_8);
-
-//     resp.setStatus(HTTP_OK);
-//     resp.setHeader("Content-Type", JSON_UTF_8.toString());
-//     resp.setHeader("Content-Length", String.valueOf(payload.length));
-
-//     try (ServletOutputStream out = resp.getOutputStream()) {
-//       out.write(payload);
-//     }
-//   }
-// }

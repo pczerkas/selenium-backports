@@ -48,7 +48,7 @@ def release_version
 end
 
 def version
-  "#{release_version}.11"
+  "#{release_version}.12"
 end
 
 # The build system used by webdriver is layered on top of rake, and we call it
