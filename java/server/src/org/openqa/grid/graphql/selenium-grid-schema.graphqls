@@ -59,7 +59,7 @@ type GridQuery {
   grid: Grid!
   sessionsInfo: Sessions!
   # nodesInfo: Nodes!
-  # session(id: String!) : Session!
+  session(id: String!) : Session!
 }
 
 type Grid {
